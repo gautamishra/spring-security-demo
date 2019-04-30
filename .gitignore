@@ -11,6 +11,11 @@ HELP.md
 .springBeans
 .sts4-cache
 
+# Package Files #
+*.jar
+*.war
+*.ear
+
 ### IntelliJ IDEA ###
 .idea
 *.iws
