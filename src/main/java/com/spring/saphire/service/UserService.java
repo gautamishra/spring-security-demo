@@ -1,8 +1,12 @@
 package com.spring.saphire.service;
 
+import java.util.Calendar;
+import java.util.Locale;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
 import com.spring.saphire.DTO.UserDTO;
@@ -24,6 +28,10 @@ public class UserService implements IUserServcie {
 
 	@Autowired
 	private TokenRepositiory tokenRepository;
+
+	@Autowired
+	private MessageSource messageSource;
+
 
 	@Transactional
 	@Override
@@ -48,8 +56,28 @@ public class UserService implements IUserServcie {
 	}
 
 	@Override
-	public void CreateVerifactionToken(User user, String token) {
+	public void createVerifactionToken(User user, String token) {
 		VerificationToken vertoken = new VerificationToken(user, token);
 		tokenRepository.saveAndFlush(vertoken);
 	}
+
+	@Override
+	public String confirmRegistration(String token, Locale locale) {
+		VerificationToken verfictaionToken = tokenRepository.findByToken(token);
+		User user = verfictaionToken.getUser();
+
+		Calendar cal = Calendar.getInstance();
+		System.out.println("current time " + cal.getTime());
+		System.out.println("expire time " + verfictaionToken.getExpiryDate());
+
+		if ((verfictaionToken.getExpiryDate().getTime() - cal.getTime().getTime()) <= 0) {
+			return messageSource.getMessage("auth.message.expired", null, locale);
+		} else {
+			user.setEnable(true);
+			userRepository.saveAndFlush(user);
+			return messageSource.getMessage("auth.message.confirmRegistration" , null, locale);
+		}
+
+	}
+
 }
