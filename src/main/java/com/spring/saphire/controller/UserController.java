@@ -8,6 +8,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.saphire.DTO.UserDTO;
@@ -36,6 +37,11 @@ public class UserController {
 					.publishEvent(new OnRegistrationCompleteEvent(user, request.getContextPath(), request.getLocale()));
 		}
 		return user;
+	}
+
+	@GetMapping("/registration-confirm")
+	public String registrationConfirmation(@RequestParam("token") String token, HttpServletRequest request) {
+		return usrService.confirmRegistration(token, request.getLocale());
 	}
 
 	@GetMapping("/get_data")

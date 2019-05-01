@@ -34,7 +34,7 @@ public class RegistrationListenener implements ApplicationListener<OnRegistratio
 		System.out.println("In Listener");
 		User user = event.getUser();
 		String token = UUID.randomUUID().toString();
-		service.CreateVerifactionToken(user, token);
+		service.createVerifactionToken(user, token);
 		String recipientAddress = user.getEmail();
 		String subject = "Registration Confirmation";
 		String confirmationUrl = "/regitrationConfirm.html?token=" + token;
