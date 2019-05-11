@@ -2,6 +2,7 @@ package com.spring.saphire.service;
 
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.UUID;
 
 import javax.transaction.Transactional;
 
@@ -65,19 +66,30 @@ public class UserService implements IUserServcie {
 	public String confirmRegistration(String token, Locale locale) {
 		VerificationToken verfictaionToken = tokenRepository.findByToken(token);
 		User user = verfictaionToken.getUser();
-
+		String message = "";
 		Calendar cal = Calendar.getInstance();
 		System.out.println("current time " + cal.getTime());
 		System.out.println("expire time " + verfictaionToken.getExpiryDate());
 
 		if ((verfictaionToken.getExpiryDate().getTime() - cal.getTime().getTime()) <= 0) {
-			return messageSource.getMessage("auth.message.expired", null, locale);
+			message = messageSource.getMessage("auth.message.expired", null, locale) + "\n";
+			message += "click on below to genrate confirmation ink again \n";
+			message += "localhost:8080/user/resendRegistrationToken/" + token;
+			return message;
 		} else {
 			user.setEnable(true);
 			userRepository.saveAndFlush(user);
 			return messageSource.getMessage("auth.message.confirmRegistration" , null, locale);
 		}
 
+	}
+
+	@Override
+	public VerificationToken generateNewVerficationToken(String token) {
+		VerificationToken verificationToken = tokenRepository.findByToken(token);
+		verificationToken.updateToken(UUID.randomUUID().toString());
+		tokenRepository.saveAndFlush(verificationToken);
+		return verificationToken;
 	}
 
 }
