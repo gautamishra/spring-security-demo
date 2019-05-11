@@ -4,6 +4,7 @@ import java.util.Locale;
 
 import com.spring.saphire.DTO.UserDTO;
 import com.spring.saphire.modal.User;
+import com.spring.saphire.modal.VerificationToken;
 import com.spring.saphire.validation.EmailExistsException;
 
 public interface IUserServcie {
@@ -13,4 +14,6 @@ public interface IUserServcie {
 	void createVerifactionToken(User user, String token);
 
 	String confirmRegistration(String token, Locale locale);
+
+	VerificationToken generateNewVerficationToken(String token);
 }
