@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 
 @Configuration
-public class MessageSourceConfig {
+public class ApplicaationConfig {
 
 	@Bean
 	public MessageSource messageSource() {
@@ -15,4 +15,5 @@ public class MessageSourceConfig {
 		messageSource.setDefaultEncoding("UTF-8");
 		return messageSource;
 	}
+
 }

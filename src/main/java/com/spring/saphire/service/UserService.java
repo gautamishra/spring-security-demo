@@ -8,6 +8,7 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.spring.saphire.DTO.UserDTO;
@@ -33,6 +34,8 @@ public class UserService implements IUserServcie {
 	@Autowired
 	private MessageSource messageSource;
 
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	@Transactional
 	@Override
@@ -45,7 +48,7 @@ public class UserService implements IUserServcie {
 		User user = new User();
 		user.setFirstName(accountDto.getFirstname());
 		user.setLastName(accountDto.getLastname());
-		user.setPassword(accountDto.getPassword());
+		user.setPassword(passwordEncoder.encode(accountDto.getPassword()));
 		user.setEmail(accountDto.getEmail());
 		user.setRoles(roleRepository.findByName("ROLE_USER"));
 		return userRepository.save(user);
