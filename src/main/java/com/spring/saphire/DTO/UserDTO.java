@@ -1,5 +1,7 @@
 package com.spring.saphire.DTO;
 
+import java.util.Date;
+
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -23,6 +25,9 @@ public class UserDTO {
 	@NotNull
 	@NotEmpty
 	private String email;
+	
+	private Date dateOfBirth;
+	
 
 	public String getFirstname() {
 		return firstname;
@@ -55,5 +60,15 @@ public class UserDTO {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
+	public Date getDateOfBirth() {
+		return dateOfBirth;
+	}
+
+	public void setDateOfBirth(Date dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
+	}
+	
+	
 
 }
