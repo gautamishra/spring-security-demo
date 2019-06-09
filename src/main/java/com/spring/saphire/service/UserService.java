@@ -42,7 +42,7 @@ public class UserService implements IUserServcie {
 	public User registerNewUserAccount(UserDTO accountDto) throws EmailExistsException {
 		if (emailExists(accountDto.getEmail())) {
 	            throw new EmailExistsException(
-					"There is an account with that email address:  + accountDto.getEmail()");
+					"There is an account with that email address:"  + accountDto.getEmail());
 	        }
 
 		User user = new User();
@@ -51,6 +51,9 @@ public class UserService implements IUserServcie {
 		user.setPassword(passwordEncoder.encode(accountDto.getPassword()));
 		user.setEmail(accountDto.getEmail());
 		user.setRoles(roleRepository.findByName("ROLE_USER"));
+		if(accountDto.getDateOfBirth() != null) {
+			user.setDateOfBirth(accountDto.getDateOfBirth());
+		}
 		return userRepository.save(user);
 	}
 

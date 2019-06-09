@@ -1,5 +1,6 @@
 package com.spring.saphire.modal;
 
+import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -35,6 +36,8 @@ public class User {
 	private boolean enable;
 
 	private String email;
+	
+	private Date dateOfBirth;
 
 	@JsonIgnore
 	@ManyToMany(fetch = FetchType.LAZY)
@@ -42,6 +45,7 @@ public class User {
 	private Set<Role> roles;
 
 	private long roleId;
+
 
 	public Long getId() {
 		return id;
@@ -107,4 +111,13 @@ public class User {
 		this.enable = enable;
 	}
 
+	public Date getDateOfBirth() {
+		return dateOfBirth;
+	}
+
+	public void setDateOfBirth(Date dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
+	}
+
+	
 }
