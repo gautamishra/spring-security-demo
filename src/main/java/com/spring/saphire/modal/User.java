@@ -30,7 +30,7 @@ public class User {
 
 	private String lastName;
 
-	@Column(length = 60)
+	@Column(length = 100)
 	private String password;
 
 	private boolean enable;
@@ -40,7 +40,7 @@ public class User {
 	private Date dateOfBirth;
 
 	@JsonIgnore
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
 	private Set<Role> roles;
 
@@ -117,6 +117,15 @@ public class User {
 
 	public void setDateOfBirth(Date dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
+	}
+
+	@Override
+	public String toString() {
+		final StringBuilder builder = new StringBuilder();
+		builder.append("User [id=").append(id).append(", firstName=").append(firstName).append(", lastName=")
+				.append(lastName).append(", email=").append(email).append(", password=").append(password)
+				.append(", enabled=").append(enable).append(", roles=").append(roles).append("]");
+		return builder.toString();
 	}
 
 	
