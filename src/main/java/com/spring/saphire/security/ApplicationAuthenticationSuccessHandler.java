@@ -15,8 +15,9 @@ public class ApplicationAuthenticationSuccessHandler extends SimpleUrlAuthentica
 
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-	}
 			Authentication authentication) throws IOException, ServletException {
-		System.out.println("Login Success");
+		response.setContentType("application/json");
+		response.getWriter().write("Login success Engoy");
+	}
 
 }

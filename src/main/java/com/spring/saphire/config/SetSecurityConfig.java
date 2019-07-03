@@ -1,5 +1,7 @@
 package com.spring.saphire.config;
 
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,8 +15,12 @@ import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.spring.saphire.security.ApplicationAuthenticationSuccessHandler;
+import com.spring.saphire.security.CustomAuthenticationFailureHandler;
 import com.spring.saphire.service.MyUserDetailService;
 
 @Configuration
@@ -26,6 +32,9 @@ public class SetSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private ApplicationAuthenticationSuccessHandler applicationAuthenticationSuccessHandler;
+
+	@Autowired
+	private CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
 
 	
 	@Override
@@ -41,6 +50,7 @@ public class SetSecurityConfig extends WebSecurityConfigurerAdapter {
 	            .and()
 	            .formLogin()
 				.successHandler(applicationAuthenticationSuccessHandler)
+				.failureHandler(customAuthenticationFailureHandler)
 	            .and()
 	            .logout();
 	 }
@@ -97,5 +107,15 @@ public class SetSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Bean
 	public SessionRegistry sessionRegistry() {
 		return new SessionRegistryImpl();
+	}
+
+	@Bean
+	CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration configuration = new CorsConfiguration();
+		configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
+		configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT"));
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", configuration);
+		return source;
 	}
 }
