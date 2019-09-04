@@ -26,7 +26,7 @@ import com.spring.saphire.utilities.MailUtility;
 import com.spring.saphire.utilities.RequestUtility;
 import com.spring.saphire.validation.EmailExistsException;
 
-@CrossOrigin
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api")
 public class UserController {
@@ -46,7 +46,7 @@ public class UserController {
 	@Autowired
 	private MessageSource messages;
 
-	@PostMapping("/user/register")
+	@PostMapping("/register")
 	public User registerUserAccount(@RequestBody @Valid UserDTO userInfo, HttpServletRequest request)
 			throws EmailExistsException {
 		User user = usrService.registerNewUserAccount(userInfo);
@@ -67,13 +67,13 @@ public class UserController {
 		return usrService.confirmRegistration(token, request.getLocale());
 	}
 
-	@GetMapping("/get_data")
-	public String registerUserAccount1(Principal principal) {
+	@GetMapping("/user/currentuser")
+	public Principal registerUserAccount1(Principal principal) {
 //		System.out.println(principal.getName());
-		return "dsadad";
+		return principal;
 	}
 
-	@GetMapping("/user/resendRegistrationToken")
+	@GetMapping("/resendRegistrationToken")
 	public String resendVerificationMail(@RequestParam("token") String token, HttpServletRequest request) {
 		VerificationToken newToken = usrService.generateNewVerficationToken(token);
 		mailSernder.send(mailUtility.constructResendVerificationTokenEmail(RequestUtility.getAppUrl(request), request.getLocale(),
