@@ -46,7 +46,8 @@ public class SetSecurityConfig extends WebSecurityConfigurerAdapter {
 	        .csrf()
 	        .disable()
 				.authorizeRequests()
-				.antMatchers("/api/**").hasRole("USE")
+				.antMatchers("/api/register", "/api/registration-confirm", "/api/resendRegistrationToken").permitAll()
+				.antMatchers("/api/user/*").hasRole("USER")
 	            .and()
 	            .formLogin()
 				.successHandler(applicationAuthenticationSuccessHandler)
@@ -112,10 +113,15 @@ public class SetSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Bean
 	CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration configuration = new CorsConfiguration();
+
 		configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
-		configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT"));
+		configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+		configuration.setAllowedHeaders(
+				Arrays.asList("authorization", "content-type", "x-auth-token"));
+		configuration.setAllowCredentials(true);
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", configuration);
 		return source;
 	}
+
 }
