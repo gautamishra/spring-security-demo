@@ -1,7 +1,10 @@
 package com.spring.saphire.validation;
 
-public class GenericException extends Exception {
+import org.springframework.http.HttpStatus;
+
+public class GenericException extends RuntimeException {
 	private String message;
+	private HttpStatus httpStatus;
 
 	public GenericException() {
 		super();
@@ -9,6 +12,13 @@ public class GenericException extends Exception {
 
 	public GenericException(String message) {
 		super(message);
+		this.message = message;
+	}
+
+	public GenericException(String message, HttpStatus status) {
+		this(message);
+		this.message = message;
+		this.httpStatus = status;
 	}
 
 

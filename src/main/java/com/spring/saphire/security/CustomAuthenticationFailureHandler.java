@@ -9,12 +9,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.spring.saphire.validation.ErrorDTO;
+import com.spring.saphire.validation.GenericException;
 
 @Component
 public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
@@ -36,6 +36,7 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
 			errorMessage = messages.getMessage("auth.message.blocked", null, locale);
 		}
 
-		new ObjectMapper().writeValue(response.getOutputStream(), new ErrorDTO(errorMessage));
+//		new ObjectMapper().writeValue(response.getOutputStream(), new ErrorDTO(errorMessage));
+		throw new GenericException(errorMessage, HttpStatus.UNAUTHORIZED);
 	}
 }
