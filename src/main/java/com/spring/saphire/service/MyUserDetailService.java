@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import com.spring.saphire.config.ApplicationUser;
 import com.spring.saphire.modal.Role;
 import com.spring.saphire.modal.User;
 import com.spring.saphire.repository.UserRepository;
@@ -28,9 +29,12 @@ public class MyUserDetailService implements UserDetailsService {
 		if (user == null) {
 			throw new UsernameNotFoundException("No user found with username: " + email);
 		}
-		System.out.println(user);
-		return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(),
-				user.isEnable(), true, true, true, getAuthorities(user.getRoles()));
+		System.out.println(user.getId());
+//		return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(),
+//				user.isEnable(), true, true, true, getAuthorities(user.getRoles()));
+		
+		return new ApplicationUser(user.getEmail(), user.getPassword(),
+				user.isEnable(), user.getId(), getAuthorities(user.getRoles()));
 	}
 
 	private final Collection<? extends GrantedAuthority> getAuthorities(Set<Role> roles) {

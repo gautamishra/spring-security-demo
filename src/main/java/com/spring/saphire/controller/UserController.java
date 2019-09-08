@@ -1,7 +1,5 @@
 package com.spring.saphire.controller;
 
-import java.security.Principal;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -9,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
 import org.springframework.mail.MailSender;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.saphire.DTO.UserDTO;
+import com.spring.saphire.config.ApplicationUser;
 import com.spring.saphire.events.OnRegistrationCompleteEvent;
 import com.spring.saphire.modal.User;
 import com.spring.saphire.modal.VerificationToken;
@@ -46,6 +46,7 @@ public class UserController {
 	@Autowired
 	private MessageSource messages;
 
+
 	@PostMapping("/register")
 	public User registerUserAccount(@RequestBody @Valid UserDTO userInfo, HttpServletRequest request)
 			throws EmailExistsException {
@@ -68,9 +69,20 @@ public class UserController {
 	}
 
 	@GetMapping("/user/currentuser")
-	public Principal registerUserAccount1(Principal principal) {
+	public ApplicationUser registerUserAccount1() {
 //		System.out.println(principal.getName());
-		return principal;
+		ApplicationUser user = (ApplicationUser) SecurityContextHolder.getContext().getAuthentication()
+				.getPrincipal();
+		ApplicationUser appUser = null;
+		try {
+			appUser = (ApplicationUser) user.clone();
+			appUser.setPassword();
+		} catch (CloneNotSupportedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+//		appUser.setPassword();
+		return appUser;
 	}
 
 	@GetMapping("/resendRegistrationToken")
