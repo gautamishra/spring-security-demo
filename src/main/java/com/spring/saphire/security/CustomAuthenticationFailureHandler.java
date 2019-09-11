@@ -38,5 +38,6 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
 
 //		new ObjectMapper().writeValue(response.getOutputStream(), new ErrorDTO(errorMessage));
 		throw new GenericException(errorMessage, HttpStatus.UNAUTHORIZED);
+		
 	}
 }

@@ -70,7 +70,7 @@ public class UserController {
 
 	@GetMapping("/user/currentuser")
 	public ApplicationUser registerUserAccount1() {
-//		System.out.println(principal.getName());
+
 		ApplicationUser user = (ApplicationUser) SecurityContextHolder.getContext().getAuthentication()
 				.getPrincipal();
 		ApplicationUser appUser = null;
@@ -81,7 +81,7 @@ public class UserController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-//		appUser.setPassword();
+		appUser.setPassword();
 		return appUser;
 	}
 
