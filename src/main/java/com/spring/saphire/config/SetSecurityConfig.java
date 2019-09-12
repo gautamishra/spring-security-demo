@@ -15,6 +15,7 @@ import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -36,6 +37,9 @@ public class SetSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
 
+	@Autowired
+	private AuthenticationEntryPoint restAuthenticationEntryPoint;
+
 	
 	@Override
 	    protected void configure(final HttpSecurity http) throws Exception {
@@ -48,8 +52,8 @@ public class SetSecurityConfig extends WebSecurityConfigurerAdapter {
 				.authorizeRequests()
 				.antMatchers("/api/register", "/api/registration-confirm", "/api/resendRegistrationToken").permitAll()
 				.antMatchers("/api/user/*").hasRole("USER")
-	            .and()
-	            .formLogin()
+				.and().exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
+				.formLogin()
 				.successHandler(applicationAuthenticationSuccessHandler)
 				.failureHandler(customAuthenticationFailureHandler)
 	            .and()
