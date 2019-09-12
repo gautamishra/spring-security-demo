@@ -48,7 +48,7 @@ public class UserController {
 
 
 	@PostMapping("/register")
-	public User registerUserAccount(@RequestBody @Valid UserDTO userInfo, HttpServletRequest request)
+	public String registerUserAccount(@RequestBody @Valid UserDTO userInfo, HttpServletRequest request)
 			throws EmailExistsException {
 		User user = usrService.registerNewUserAccount(userInfo);
 		System.out.println(user.getEmail());
@@ -60,7 +60,7 @@ public class UserController {
 			Thread emailThread = new Thread(r);
 			emailThread.start();
 		}
-		return user;
+		return "User registered SuccessFully ";
 	}
 
 	@GetMapping("/registration-confirm")
@@ -70,7 +70,7 @@ public class UserController {
 
 	@GetMapping("/user/currentuser")
 	public ApplicationUser registerUserAccount1() {
-//		System.out.println(principal.getName());
+
 		ApplicationUser user = (ApplicationUser) SecurityContextHolder.getContext().getAuthentication()
 				.getPrincipal();
 		ApplicationUser appUser = null;
@@ -81,7 +81,7 @@ public class UserController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-//		appUser.setPassword();
+		appUser.setPassword();
 		return appUser;
 	}
 
